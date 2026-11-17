@@ -5,7 +5,7 @@ import os, sys, json, time
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(ROOT, "data", "sample_docs")
+DATA_DIR = os.path.join(ROOT, "data", "corpus")
 OUT = os.path.join(ROOT, "outputs")
 os.makedirs(OUT, exist_ok=True)
 
@@ -98,6 +98,18 @@ def main():
     print("Aggregate:", {k: round(v, 3) if isinstance(v, float) else v for k, v in report["aggregate"].items()})
     with open(os.path.join(OUT, "final_eval_report.md"), "w") as f:
         f.write(runner.to_markdown(report))
+
+    # 8. Corpus evaluation (bigger real-world data)
+    step("8. Corpus evaluation (11 Wikipedia articles, 231 chunks)")
+    import subprocess
+    # reuse eval logic inline
+    gold_path = os.path.join(ROOT, "data", "gold_corpus.json")
+    with open(gold_path) as f:
+        cdata = json.load(f)
+    from rag.evaluation import BenchmarkRunner
+    crunner = BenchmarkRunner(pipe)
+    creport = crunner.run(cdata, k=5)
+    print("Corpus aggregate (key):", {k: round(v,3) if isinstance(v,float) else v for k,v in creport["aggregate"].items() if k in ("precision@1","recall@3","mrr","gen_faithfulness","gen_answer_relevance")})
 
     step("DONE")
     print(f"Total time: {round(time.time()-t0,1)}s")

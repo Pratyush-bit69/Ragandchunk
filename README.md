@@ -65,6 +65,9 @@ cd Ragandchunk
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
+# Build a larger real-world corpus (11 Wikipedia articles)
+python scripts/build_corpus.py
+
 # Run everything in one command (about 3.5 min on CPU)
 python scripts/run_all.py
 ```
@@ -192,7 +195,20 @@ Confidence 0.776 (retrieval 0.491, coverage 1.0, agreement 0.901), no abstention
 
 All strategies achieve MRR 1.00 and faithfulness 1.00 on this corpus.
 
-### Knowledge graph
+### Larger corpus (11 Wikipedia articles, 231 chunks)
+
+Evaluated against a hand-curated gold set of 11 questions (one per article).
+
+| Metric | @1 | @3 | @5 | @10 |
+|---|---|---|---|---|
+| Precision | 0.91 | 0.33 | 0.20 | 0.10 |
+| Recall | 0.91 | 1.00 | 1.00 | 1.00 |
+| Hit Rate | 0.91 | 1.00 | 1.00 | 1.00 |
+| nDCG | 0.91 | 0.95 | 0.95 | 0.95 |
+
+MRR 0.94, MAP 0.94. Faithfulness 1.00, answer relevance 0.72, token F1 0.14.
+
+### Knowledge graph (sample corpus)
 
 58 entities, 32 relations, 33 connected components.
 

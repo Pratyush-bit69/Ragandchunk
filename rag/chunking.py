@@ -20,7 +20,9 @@ class Chunk:
 
     def __post_init__(self):
         if not self.chunk_id:
-            self.chunk_id = uuid.uuid4().hex[:12]
+            import hashlib
+            # deterministic id from content so gold datasets stay valid across runs
+            self.chunk_id = hashlib.md5((self.text + f"::{self.index}").encode("utf-8")).hexdigest()[:12]
 
 
 class BaseChunker:

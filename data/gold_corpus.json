@@ -1,0 +1,13 @@
+[
+  {"question": "What is photosynthesis?", "answer": "Photosynthesis converts light energy into chemical energy in plants, algae and cyanobacteria.", "relevant_chunk_ids": ["6b4cc8bb5b75"]},
+  {"question": "What is machine learning?", "answer": "Machine learning is a subset of AI that learns from data without explicit programming.", "relevant_chunk_ids": ["fbf0c441f3a5"]},
+  {"question": "What causes climate change?", "answer": "Climate change is driven by greenhouse gas emissions from human activities.", "relevant_chunk_ids": ["7ad4eb0bd23e"]},
+  {"question": "When did World War II end?", "answer": "World War II ended in 1945.", "relevant_chunk_ids": ["82381c5135f8"]},
+  {"question": "What is DNA?", "answer": "DNA is the molecule carrying genetic instructions in living organisms.", "relevant_chunk_ids": ["4e8d61ea77cb"]},
+  {"question": "What is quantum computing?", "answer": "Quantum computing uses quantum phenomena to perform computation.", "relevant_chunk_ids": ["882886011452"]},
+  {"question": "What is a black hole?", "answer": "A black hole is a region where gravity is so strong nothing escapes.", "relevant_chunk_ids": ["3800ead20130"]},
+  {"question": "What was the Renaissance?", "answer": "The Renaissance was a period of cultural rebirth in Europe.", "relevant_chunk_ids": ["9fa0ec3cf8f5"]},
+  {"question": "What is the Internet?", "answer": "The Internet is a global network of interconnected computers.", "relevant_chunk_ids": ["d5c652d4158e"]},
+  {"question": "What is a vaccine?", "answer": "A vaccine stimulates immunity against a disease.", "relevant_chunk_ids": ["74ece9736c76"]},
+  {"question": "What is blockchain?", "answer": "Blockchain is a distributed ledger secured by cryptography.", "relevant_chunk_ids": ["f73daedb6b64"]}
+]
