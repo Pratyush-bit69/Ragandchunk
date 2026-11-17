@@ -1,8 +1,15 @@
-# RAGForge
+<div align="center">
 
-Retrieval-Augmented Generation, Chunking, Evaluation and Knowledge Graphs in one toolkit.
+# RAGForge
+### Retrieval-Augmented Generation, Chunking, Evaluation and Knowledge Graphs in one toolkit
+
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-28%20passing-brightgreen)](#tests)
 
 A production-grade RAG framework that combines intelligent chunking, hybrid retrieval, knowledge-graph reasoning, agentic self-correction, and rigorous evaluation. Runs on a laptop CPU, no API key required.
+
+</div>
 
 ## Table of contents
 
