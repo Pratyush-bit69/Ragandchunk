@@ -1,59 +1,56 @@
-<div align="center">
+# RAGForge
 
-# 🧠 RAGForge
-### *Retrieval-Augmented Generation, Chunking, Evaluation & Knowledge Graphs — in one toolkit*
+Retrieval-Augmented Generation, Chunking, Evaluation and Knowledge Graphs in one toolkit.
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://python.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-28%20passing-brightgreen)](#tests)
-[![GitHub stars](https://img.shields.io/github/stars/Pratyush-bit69/Ragandchunk?style=social)](https://github.com/Pratyush-bit69/Ragandchunk)
+A production-grade RAG framework that combines intelligent chunking, hybrid retrieval, knowledge-graph reasoning, agentic self-correction, and rigorous evaluation. Runs on a laptop CPU, no API key required.
 
-**A production-grade, research-flavored RAG framework** that fuses intelligent chunking, hybrid retrieval, knowledge-graph reasoning, agentic self-correction, and rigorous evaluation — all runnable on a laptop CPU.
+## Table of contents
 
-[Quick Start](#-quick-start) · [Features](#-features) · [Architecture](#-architecture) · [Advanced](#-advanced-capabilities) · [Evaluation](#-evaluation) · [API](#-api--ui)
+- [Why RAGForge](#why-ragforge)
+- [Architecture](#architecture)
+- [Quick start](#quick-start)
+- [Features](#features)
+- [Results](#results)
+- [API and UI](#api-and-ui)
+- [Tests](#tests)
+- [Project layout](#project-layout)
+- [Configuration](#configuration)
+- [License](#license)
 
-</div>
+## Why RAGForge
 
----
+Most RAG demos stop at "embed, retrieve, generate". RAGForge goes further:
 
-## ✨ Why RAGForge?
+- 9 chunking strategies with adaptive, structure-aware splitting
+- Hybrid and late-interaction retrieval (dense, BM25, RRF fusion, ColBERT-style MaxSim, MMR)
+- Knowledge-graph RAG with entity/relation extraction, community detection and GraphRAG fusion
+- Agentic RAG: plan, retrieve, grade, rewrite, synthesize, self-critique, abstain
+- LLM-as-a-judge evaluation, multi-agent debate, self-consistency
+- 30+ metrics across retrieval, generation, multi-hop, conflict, provenance and abstention
+- FastAPI and Streamlit out of the box
+- Runs on CPU with a local LLM (Qwen2.5-0.5B), no API key required
 
-Most RAG demos stop at "embed → retrieve → generate". RAGForge goes further:
-
-- 🧩 **9 chunking strategies** with adaptive, structure-aware splitting
-- 🔀 **Hybrid + late-interaction retrieval** (dense · BM25 · RRF · ColBERT-style MaxSim · MMR)
-- 🕸️ **Knowledge-Graph RAG** with entity/relation extraction, community detection & GraphRAG
-- 🤖 **Agentic RAG** — plan → retrieve → grade → rewrite → synthesize → self-critique → abstain
-- 🧪 **LLM-as-a-Judge** evaluation + multi-agent debate + self-consistency
-- 📊 **30+ metrics** across retrieval, generation, multi-hop, conflict, provenance & abstention
-- 🖥️ **FastAPI + Streamlit** out of the box
-- ⚡ Runs on CPU with a local LLM (Qwen2.5-0.5B) — no API key required
-
----
-
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 flowchart LR
     A[Documents] --> B[Loaders]
-    B --> C[Chunkers<br/>9 strategies]
-    C --> D[Embeddings<br/>ST · TF-IDF · Hashing · OpenAI]
-    D --> E[Vector Store<br/>In-Memory · Chroma]
-    C --> F[Knowledge Graph<br/>Entities · Relations · Communities]
-    Q[Query] --> G[Query Rewriter<br/>+ HyDE + Expansion]
-    G --> H[Retrievers<br/>Dense · Sparse · Hybrid · Late-Interaction]
-    H --> I[Grader · Reranker]
+    B --> C[Chunkers]
+    C --> D[Embeddings]
+    D --> E[Vector Store]
+    C --> F[Knowledge Graph]
+    Q[Query] --> G[Query Rewriter]
+    G --> H[Retrievers]
+    H --> I[Grader and Reranker]
     F --> J[Graph Retriever]
     I --> K[Context Compressor]
     J --> K
-    K --> L[Generator<br/>Extractive · LLM · Verified]
-    L --> M[Agentic Loop<br/>Self-critique · Abstention]
+    K --> L[Generator]
+    L --> M[Agentic Loop]
     M --> N[Answer + Provenance + Confidence]
 ```
 
----
-
-## 🚀 Quick Start
+## Quick start
 
 ```bash
 git clone https://github.com/Pratyush-bit69/Ragandchunk.git
@@ -61,92 +58,134 @@ cd Ragandchunk
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# Run everything in one command (~3.5 min on CPU)
+# Run everything in one command (about 3.5 min on CPU)
 python scripts/run_all.py
 ```
 
-Or run individual demos:
+Individual demos:
 
 ```bash
-python scripts/demo.py              # basic RAG + eval + graph
-python scripts/advanced_demo.py    # agentic RAG, HyDE, conflict detection
+python scripts/demo.py              # basic RAG, evaluation, graph
+python scripts/advanced_demo.py     # agentic RAG, HyDE, conflict detection
 python scripts/llm_rag_demo.py     # RAG with a real LLM (Qwen2.5)
-python scripts/llm_judge_demo.py   # LLM-as-judge + reranker + conversational
+python scripts/llm_judge_demo.py   # LLM-as-judge, reranker, conversational
 python scripts/compare_chunking.py  # ablation over chunking strategies
 ```
 
----
+## Features
 
-## 🎯 Features
+### Document loading
 
-### 📄 Document Loading
-`txt` · `md` · `csv` · `json` · `html` · directories (recursive glob)
+txt, md, csv, json, html, and recursive directory loading.
 
-### ✂️ Chunking Strategies
+### Chunking strategies
 
 | Strategy | Description |
 |---|---|
-| `fixed` | Fixed character window with overlap |
-| `recursive` | LangChain-style recursive splitting |
-| `sentence` | Sentence-boundary aware |
-| `paragraph` | Paragraph-aware packing |
-| `sliding` | Sliding window |
-| `token` | Tiktoken-based token chunking |
-| `semantic` | Embedding-based breakpoint detection |
-| `parent_child` | Small-to-big retrieval |
-| `code` | Definition-boundary splitting |
-| `adaptive` | Structure + information-density aware |
+| fixed | Fixed character window with overlap |
+| recursive | Recursive character splitting |
+| sentence | Sentence-boundary aware |
+| paragraph | Paragraph-aware packing |
+| sliding | Sliding window |
+| token | Tiktoken-based token chunking |
+| semantic | Embedding-based breakpoint detection |
+| parent_child | Small-to-big retrieval |
+| code | Definition-boundary splitting |
+| adaptive | Structure and information-density aware |
 
-### 🔍 Retrieval
+### Retrieval
 
-- **Dense** — cosine similarity over embeddings
-- **Sparse** — BM25 (rank-bm25)
-- **Hybrid** — RRF-style fusion of dense + sparse
-- **Late Interaction** — ColBERT-style MaxSim over token embeddings
-- **MMR** — diversity-aware selection
-- **Multi-Query** — query variants + dedup
-- **Parent-Document** — retrieve small, return big
-- **Reranking** — cross-encoder + LLM-based reranker
+Dense (cosine), sparse (BM25), hybrid (RRF fusion), late interaction (ColBERT-style MaxSim), MMR, multi-query, parent-document, cross-encoder and LLM-based reranking.
 
-### 🕸️ Knowledge Graph & GraphRAG
+### Knowledge graph and GraphRAG
 
-- Rule-based + LLM entity/relation extraction
-- Multi-hop traversal, community detection (greedy modularity)
-- Temporal knowledge graph with validity intervals
-- GraphRAG fusion (vector + graph retrieval)
-- Matplotlib visualization
+Rule-based and LLM entity/relation extraction, multi-hop traversal, community detection, temporal knowledge graph with validity intervals, GraphRAG fusion of vector and graph retrieval, matplotlib visualization.
 
-### 🤖 Advanced RAG
+### Advanced RAG
 
-| Module | What it does |
+| Module | Purpose |
 |---|---|
-| `agentic_rag` | Plan → retrieve → grade → rewrite → synthesize → self-critique → abstain |
-| `hyde` | Hypothetical Document Embeddings |
-| `query_decomposition` | Multi-hop question splitting |
-| `query_rewriter` / `query_expansion` | Recall-boosting variants |
-| `retrieval_grader` | LLM/heuristic relevance grading |
-| `conflict` | Detect contradictory sources + provenance |
-| `confidence` | Calibrated abstention |
-| `verified_generation` | NLI-style faithfulness gating |
-| `multi_agent_debate` | Dense vs sparse agents + judge |
-| `self_consistency` | Sample + vote |
-| `graph_of_thoughts` | Thought-graph reasoning |
-| `adaptive_retrieval` | Complexity-based top-k |
-| `context_compression` | Extractive/LLM compression |
-| `conversational_rag` | Multi-turn memory + condensation |
-| `llm_reranker` / `llm_judge` | LLM-powered rerank & evaluation |
+| agentic_rag | Plan, retrieve, grade, rewrite, synthesize, self-critique, abstain |
+| hyde | Hypothetical Document Embeddings |
+| query_decomposition | Multi-hop question splitting |
+| query_rewriter, query_expansion | Recall-boosting variants |
+| retrieval_grader | LLM and heuristic relevance grading |
+| conflict | Detect contradictory sources and attribute provenance |
+| confidence | Calibrated abstention |
+| verified_generation | NLI-style faithfulness gating |
+| multi_agent_debate | Dense vs sparse agents with a judge |
+| self_consistency | Sample and vote |
+| graph_of_thoughts | Thought-graph reasoning |
+| adaptive_retrieval | Complexity-based top-k |
+| context_compression | Extractive and LLM compression |
+| conversational_rag | Multi-turn memory and condensation |
+| llm_reranker, llm_judge | LLM-powered rerank and evaluation |
 
-### 🧪 Evaluation (30+ metrics)
+### Evaluation (30+ metrics)
 
-**Retrieval:** Precision@k · Recall@k · Hit Rate · MRR · MAP · nDCG@k
+Retrieval: Precision@k, Recall@k, Hit Rate, MRR, MAP, nDCG@k.
 
-**Generation:** Faithfulness · Answer Relevance · Context Precision/Recall · Token F1 · ROUGE-L · Exact Match
+Generation: Faithfulness, Answer Relevance, Context Precision, Context Recall, Token F1, ROUGE-L, Exact Match.
 
-**Complex:** Multi-hop accuracy · Reasoning chain score · Conflict resolution · Abstention quality (P/R/F1) · Provenance score · Citation coverage · LLM-as-judge
+Complex: Multi-hop accuracy, reasoning chain score, conflict resolution, abstention quality (precision/recall/F1), provenance score, citation coverage, LLM-as-judge.
 
----
+## Results
 
-## 🖥️ API & UI
+Measured on the bundled sample corpus (AI overview + RAG best practices). Hardware: CPU only.
+
+### Retrieval (extractive generator, hybrid retrieval)
+
+| Metric | @1 | @3 | @5 | @10 |
+|---|---|---|---|---|
+| Precision | 1.00 | 1.00 | 1.00 | 0.50 |
+| Recall | 0.20 | 0.60 | 1.00 | 1.00 |
+| Hit Rate | 1.00 | 1.00 | 1.00 | 1.00 |
+| nDCG | 1.00 | 1.00 | 1.00 | 1.00 |
+
+MRR 1.00, MAP 1.00.
+
+### Generation
+
+| Metric | Extractive | LLM (Qwen2.5-0.5B) |
+|---|---|---|
+| Faithfulness | 1.00 | 1.00 |
+| Answer relevance | 0.58 | 0.74 |
+| Token F1 | 1.00 | 0.95 |
+| ROUGE-L | 1.00 | 0.91 |
+| Exact match | 1.00 | 0.75 |
+
+### LLM-as-a-judge (Qwen2.5-0.5B as judge)
+
+| Generator | Faithfulness | Answer relevance | Context relevance |
+|---|---|---|---|
+| Extractive | 0.67 | 0.40 | 0.80 |
+| LLM | 0.80 | 0.60 | 0.73 |
+
+The LLM generator improves answer relevance while maintaining faithfulness.
+
+### Agentic RAG
+
+Confidence 0.776 (retrieval 0.491, coverage 1.0, agreement 0.901), no abstention. 2 conflicting sources detected. Provenance supported 3 of 3 sentences. Sub-question coverage 0.67.
+
+### Chunking ablation (number of chunks produced)
+
+| Strategy | Chunks |
+|---|---|
+| fixed | 20 |
+| recursive | 22 |
+| sentence | 30 |
+| semantic | 31 |
+| sliding | 20 |
+| token | 4 |
+| parent_child | 99 |
+
+All strategies achieve MRR 1.00 and faithfulness 1.00 on this corpus.
+
+### Knowledge graph
+
+58 entities, 32 relations, 33 connected components.
+
+## API and UI
 
 ```bash
 # FastAPI
@@ -160,61 +199,49 @@ python api.py          # http://localhost:8000
 streamlit run app.py
 ```
 
----
-
-## 🧪 Tests
+## Tests
 
 ```bash
 python -m pytest -q
 # 28 passed
 ```
 
----
-
-## 📁 Project Layout
+## Project layout
 
 ```
 rag/
-├── config.py              # dataclass config + env overrides
-├── loaders.py             # txt/md/csv/json/html/directory
-├── chunking.py            # 9 chunking strategies
-├── embeddings.py          # ST · TF-IDF · hashing · OpenAI · cached
-├── vectorstore.py         # in-memory + Chroma + persistence
-├── retrievers.py          # dense/sparse/hybrid/rerank/MMR/multi-query/parent
-├── graph.py               # knowledge graph + GraphRAG
-├── generation.py          # extractive · OpenAI · Anthropic · HuggingFace
-├── evaluation.py          # 30+ metrics + BenchmarkRunner
-├── pipeline.py            # end-to-end orchestration
-└── advanced/              # 15 innovative modules
-data/                      # sample docs + eval dataset
-scripts/                   # CLI demos & run_all.py
-tests/                     # pytest suite
-app.py                     # Streamlit UI
-api.py                     # FastAPI service
+  config.py              # dataclass config and env overrides
+  loaders.py             # txt, md, csv, json, html, directory
+  chunking.py            # 9 chunking strategies
+  embeddings.py          # sentence-transformers, TF-IDF, hashing, OpenAI, cached
+  vectorstore.py         # in-memory, Chroma, persistence
+  retrievers.py          # dense, sparse, hybrid, rerank, MMR, multi-query, parent
+  graph.py               # knowledge graph and GraphRAG
+  generation.py          # extractive, OpenAI, Anthropic, HuggingFace
+  evaluation.py          # 30+ metrics and BenchmarkRunner
+  pipeline.py            # end-to-end orchestration
+  advanced/              # 15 innovative modules
+data/                    # sample docs and eval dataset
+scripts/                 # CLI demos and run_all.py
+tests/                   # pytest suite
+app.py                   # Streamlit UI
+api.py                   # FastAPI service
 ```
 
----
+## Configuration
 
-## ⚙️ Configuration
+All components configurable via rag/config.py (RAGConfig) or environment variables.
 
-All components configurable via `rag/config.py` (`RAGConfig`) or env vars:
-
-| Env Var | Default |
+| Variable | Default |
 |---|---|
-| `RAG_EMBEDDING_PROVIDER` | `sentence-transformers` |
-| `RAG_EMBEDDING_MODEL` | `all-MiniLM-L6-v2` |
-| `RAG_GENERATION_PROVIDER` | `extractive` |
-| `RAG_GENERATION_MODEL` | `gpt-4o-mini` |
-| `RAG_PERSIST_DIR` | — |
+| RAG_EMBEDDING_PROVIDER | sentence-transformers |
+| RAG_EMBEDDING_MODEL | all-MiniLM-L6-v2 |
+| RAG_GENERATION_PROVIDER | extractive |
+| RAG_GENERATION_MODEL | gpt-4o-mini |
+| RAG_PERSIST_DIR | (none) |
 
 Switch to a local LLM: `RAG_GENERATION_PROVIDER=huggingface RAG_GENERATION_MODEL=Qwen/Qwen2.5-0.5B-Instruct`.
 
----
+## License
 
-## 📜 License
-
-MIT — see [LICENSE](LICENSE).
-
-<div align="center">
-<b>Built with ❤️ for researchers & builders pushing RAG beyond the basics.</b>
-</div>
+MIT. See LICENSE.
