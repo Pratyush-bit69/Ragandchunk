@@ -140,26 +140,30 @@ Complex: Multi-hop accuracy, reasoning chain score, conflict resolution, abstent
 
 Measured on the bundled sample corpus (AI overview + RAG best practices). Hardware: CPU only.
 
-### Retrieval (extractive generator, hybrid retrieval)
+### Retrieval (extractive generator, hybrid retrieval, gold dataset)
+
+Evaluated against a hand-curated gold set (relevant chunk ids and reference answers not derived from retrieval).
 
 | Metric | @1 | @3 | @5 | @10 |
 |---|---|---|---|---|
-| Precision | 1.00 | 1.00 | 1.00 | 0.50 |
-| Recall | 0.20 | 0.60 | 1.00 | 1.00 |
-| Hit Rate | 1.00 | 1.00 | 1.00 | 1.00 |
-| nDCG | 1.00 | 1.00 | 1.00 | 1.00 |
+| Precision | 0.60 | 0.40 | 0.24 | 0.12 |
+| Recall | 0.47 | 0.80 | 0.80 | 0.80 |
+| Hit Rate | 0.60 | 1.00 | 1.00 | 1.00 |
+| nDCG | 0.60 | 0.71 | 0.71 | 0.71 |
 
-MRR 1.00, MAP 1.00.
+MRR 0.77, MAP 0.63.
 
 ### Generation
 
-| Metric | Extractive | LLM (Qwen2.5-0.5B) |
-|---|---|---|
-| Faithfulness | 1.00 | 1.00 |
-| Answer relevance | 0.58 | 0.74 |
-| Token F1 | 1.00 | 0.95 |
-| ROUGE-L | 1.00 | 0.91 |
-| Exact match | 1.00 | 0.75 |
+| Metric | Extractive |
+|---|---|
+| Faithfulness | 1.00 |
+| Answer relevance | 0.65 |
+| Token F1 | 0.28 |
+| ROUGE-L | 0.15 |
+| Exact match | 0.00 |
+
+(LLM generator numbers come from a separate self-referential demo; see scripts/llm_rag_demo.py.)
 
 ### LLM-as-a-judge (Qwen2.5-0.5B as judge)
 

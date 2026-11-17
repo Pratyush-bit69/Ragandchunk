@@ -1,0 +1,27 @@
+[
+  {
+    "question": "What is retrieval-augmented generation?",
+    "answer": "RAG combines retrieval of relevant documents with generative models to produce more accurate and grounded answers.",
+    "relevant_chunk_ids": ["adea20cbbbea", "769593f7d16a", "8d1a5f4d8df7"]
+  },
+  {
+    "question": "What are the types of machine learning?",
+    "answer": "Supervised learning, unsupervised learning, and reinforcement learning.",
+    "relevant_chunk_ids": ["4c9611471c02", "f5de7fd3eb49", "cbd9eca60307"]
+  },
+  {
+    "question": "What metrics are used to evaluate RAG systems?",
+    "answer": "Precision, recall, MRR, nDCG, faithfulness, answer relevance, and context precision.",
+    "relevant_chunk_ids": ["92d15390ddff"]
+  },
+  {
+    "question": "What is GraphRAG?",
+    "answer": "GraphRAG builds a knowledge graph from documents, detects communities, and generates summaries.",
+    "relevant_chunk_ids": ["7c4a4ed3411e"]
+  },
+  {
+    "question": "What chunking strategies are common?",
+    "answer": "Fixed-size, recursive, sentence-based, semantic, and sliding window chunking.",
+    "relevant_chunk_ids": ["b3dfa5c1e475"]
+  }
+]
