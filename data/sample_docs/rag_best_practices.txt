@@ -1,0 +1,15 @@
+RAG Best Practices
+
+Data preparation is critical for RAG. Clean documents, remove boilerplate, and preserve structure. Use metadata such as source, title, and date to enable filtering.
+
+Chunking: choose chunk size based on embedding model context window and expected query length. Typical sizes range from 256 to 1024 tokens. Use overlap of 10-20% to avoid cutting sentences. Recursive splitting on paragraphs then sentences works well.
+
+Embeddings: use domain-specific or multilingual models when needed. Normalize vectors for cosine similarity. Cache embeddings to avoid recomputation.
+
+Retrieval: hybrid search combining dense and sparse (BM25) improves recall. Reranking with a cross-encoder improves precision. Use MMR to diversify results and reduce redundancy.
+
+Generation: instruct the model to cite sources and abstain when context is insufficient. Use temperature 0 for factual tasks.
+
+Evaluation: build a golden dataset of question-answer pairs with relevant document ids. Track retrieval metrics (recall@k, MRR) and generation metrics (faithfulness, answer relevance). Run ablations over chunk size and retrieval strategy.
+
+Graph: extract entities and relations to support multi-hop questions. Community summaries help global questions. Combine graph and vector retrieval for best results.
